@@ -12,7 +12,7 @@ var likeRouter = require('./routes/match/like');
 var matchRouter = require('./routes/match/match');
 var app = express();
 
-// view engine setup
+// view engine setups
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hjs');
 
