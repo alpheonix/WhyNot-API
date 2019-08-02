@@ -19,6 +19,8 @@ const {upload} = require('../../config');
 
 router.get('/', verifyToken, async (req, res, next) => {
     const client = new MongoClient(MONGODB_URI, {useNewUrlParser: true});
+    
+    
     try {
         await client.connect();
         const db = client.db(dbName);
@@ -47,6 +49,9 @@ router.get('/', verifyToken, async (req, res, next) => {
                 _id: {$nin: [ObjectId(req.token._id)]},
                 gender: req.token.preference,
                 preference: req.token.gender,
+                film: req.token.film,
+                activite: req.token.activite,
+                musique: req.token.musique,
                 viewers: {
                     $not: {
                         $elemMatch: {
@@ -126,7 +131,10 @@ router.post('/login', async function (req, res) {
                     email: result[0].email,
                     username: result[0].username,
                     gender: result[0].gender,
-                    preference: result[0].preference
+                    preference: result[0].preference,
+                    film: result[0].film,
+                    activite: result[0].activite,
+                    musique: result[0].musique,
                 }, JWT_KEY, {expiresIn: '24h'}, (err, token) => {
                     if (err) {
                         res.send({error: 'error'});
@@ -177,6 +185,9 @@ router.post('/signup', upload.single('image'), async function (req, res, next) {
             birthdate: req.body.birthdate,
             gender: parseInt(req.body.gender),
             preference: parseInt(req.body.preference),
+            film: parseInt(req.body.film),
+            musique: parseInt(req.body.musique),
+            activite: parseInt(req.body.activite),
             bio: req.body.bio,
             viewers: [],
             createdAt: dateNow(),
@@ -192,7 +203,10 @@ router.post('/signup', upload.single('image'), async function (req, res, next) {
             email: result[0].email,
             username: result[0].username,
             gender: result[0].gender,
-            preference: result[0].preference
+            preference: result[0].preference,
+            film: result[0].film,
+            activite: result[0].activite,
+            musique: result[0].musique,
         }, JWT_KEY, {expiresIn: '24h'}, (err, token) => {
             if (err) {
                 res.send({message: 'error'});
