@@ -50,7 +50,9 @@ router.get('/myevents/', verifyToken, async (req, res, next) => {
         const col = db.collection('register');
         const eventCol = db.collection('events');
         let result1 = await col.find({
-            userId: req.token._id
+            userId: req.token._id,
+            isUnregistered:false
+
         }).toArray();
         if (result1.length !== 0) {
             result = await eventCol.find({_id: ObjectId(result1[0].eventId)}).toArray();
@@ -217,11 +219,59 @@ router.post('/register', verifyToken, async (req, res, next) => {
         await client.connect();
         const db = client.db(dbName);
         const col = db.collection('register');
-        await col.insertOne({
+        let result1 = await col.find({
             userId: req.token._id,
-            eventId: req.body.eventId,
-            createdAt: dateNow()
-        });
+            isUnregistered:false
+        }).toArray();
+        console.log(result1);
+        if (!result1[0]) {
+            await col.insertOne({
+                userId: req.token._id,
+                eventId: req.body.eventId,
+                createdAt: dateNow(),
+                isUnregistered: false
+            });
+        }else{
+            res.status(400).send({error: 'Vous etes deja inscrit a cet event'});
+
+        }
+        
+        let result = await col.find({}).toArray();
+        res.send({
+            result
+        })
+    } catch (err) {
+        res.send({error: err});
+    }
+    client.close();
+});
+
+router.post('/usregister', verifyToken, async (req, res, next) => {
+    const client = new MongoClient(MONGODB_URI, {useNewUrlParser: true});
+    try {
+        await client.connect();
+        const db = client.db(dbName);
+        const col = db.collection('register');
+        let result1 = await col.find({
+            userId: req.token._id,
+            eventId :req.body.eventId,
+            isUnregistered:false
+        }).toArray();
+        console.log(result1);
+        if (result1[0]) {
+            console.log("test");
+            
+            let insertResult = await col.updateOne(
+                {userId:req.token._id ,eventId:req.body.eventId, isUnregistered:false},
+                {$set: {
+                    isUnregistered:true
+                
+            }});
+        }else{
+            res.status(400).send({error: "Vous n'etes pas encore inscrit a cet event"});
+
+        }
+        
         let result = await col.find({}).toArray();
         res.send({
             result
