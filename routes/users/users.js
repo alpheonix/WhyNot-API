@@ -19,8 +19,10 @@ const {upload} = require('../../config');
 
 router.get('/', verifyToken, async (req, res, next) => {
     const client = new MongoClient(MONGODB_URI, {useNewUrlParser: true});
-    
-    
+    console.log(req.token._id);  
+    console.log(req.token.preference);  
+    console.log(req.token.gender); 
+    console.log(req.token.name);        
     try {
         await client.connect();
         const db = client.db(dbName);
@@ -31,7 +33,7 @@ router.get('/', verifyToken, async (req, res, next) => {
                 _id: {
                     $not: {
                         $elemMatch: {
-                            _id: ObjectId(req.token._id)
+                            _id: ObjectId(req.tokzn._id)
                         }
                     }
                 },
@@ -42,7 +44,10 @@ router.get('/', verifyToken, async (req, res, next) => {
                         }
                     }
                 },
-                preference: 2
+                preference: 2 ,
+                film: req.token.film,
+                activite: req.token.activite,
+                musique: req.token.musique,
             }).toArray();
         } else {
             result = await col.find({
@@ -61,6 +66,8 @@ router.get('/', verifyToken, async (req, res, next) => {
                 }
             }).toArray();
         }
+        console.log();
+        
         res.send(result);
     } catch (err) {
         res.send({
@@ -198,6 +205,57 @@ router.post('/signup', upload.single('image'), async function (req, res, next) {
 
         });
         let result = await col.find({username: req.body.username, password: md5(req.body.password)}).toArray();
+        jwt.sign({
+            _id: result[0]._id,
+            email: result[0].email,
+            username: result[0].username,
+            gender: result[0].gender,
+            preference: result[0].preference,
+            film: result[0].film,
+            activite: result[0].activite,
+            musique: result[0].musique,
+        }, JWT_KEY, {expiresIn: '24h'}, (err, token) => {
+            if (err) {
+                res.send({message: 'error'});
+            } else {
+                res.send({
+                    token,
+                    error: null
+                });
+            }
+        });
+    }
+});
+
+router.post('/modify', verifyToken,upload.single('image'), async function (req, res, next) {
+    const client = new MongoClient(MONGODB_URI, {useNewUrlParser: true});
+    await client.connect();
+    const db = client.db(dbName);
+    const col = db.collection('users');
+    //INSERT ONE DOCUMENT
+    if (!validator.validate(req.body.email)) {
+        res.status(400).send({error: 'Email invalide'});
+    } else if (!isUsernameValid(req.body.username)) {
+        res.status(400).send({error: 'Le nom d\'utilisateur ne doit contenir uniquement des lettres'});
+    }  else {
+        //INSERT ONE DOCUMENT
+        await col.updateOne(
+            {_id: ObjectId(req.token._id)},{
+                $set: {
+                    email: req.body.email,
+                    username: req.body.username,
+                    photo: BASEAPPURL + req.file.path,
+                    preference: parseInt(req.body.preference),
+                    film: parseInt(req.body.film),
+                    musique: parseInt(req.body.musique),
+                    activite: parseInt(req.body.activite),
+                    bio: req.body.bio,
+                    updatedAt: dateNow(),
+        
+                }
+            }
+            );
+        let result = await col.find({username: req.body.username, email: req.body.email}).toArray();
         jwt.sign({
             _id: result[0]._id,
             email: result[0].email,
