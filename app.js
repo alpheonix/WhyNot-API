@@ -81,8 +81,8 @@ cron.schedule('* * * * *',async () => {
       const col = db.collection('users');
       var result = await col.find().toArray();
 
-      result.forEach(elem => {
-        var result2 = await col.aggregate(
+      result.forEach(elem, async () => {
+        var result2 =  col.aggregate(
             { $sample: { size: 1 },
             _id: {$nin: [ObjectId(req.token._id)]} } )
 
