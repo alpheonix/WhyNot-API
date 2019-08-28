@@ -2,6 +2,8 @@
 
 var express = require('express');
 var router = express.Router();
+var nodemailer = require('nodemailer');
+
 
 const {MongoClient} = require('../../config');
 const {MONGODB_URI} = require('../../config');
@@ -16,6 +18,14 @@ const {md5} = require('../../config');
 const {dateNow} = require('../../config');
 const {validator} = require('../../config');
 const {upload} = require('../../config');
+
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+           user: 'arthurblanc98@gmail.com',
+           pass: '4kfe6fp.gmail'
+       }
+   });
 
 router.get('/', verifyToken, async (req, res, next) => {
     const client = new MongoClient(MONGODB_URI, {useNewUrlParser: true});
@@ -228,6 +238,19 @@ router.post('/signup', upload.single('image'), async function (req, res, next) {
             }
         });
     }
+    const mailOptions = {
+        from: 'arthurblanc98@gmail.com', // sender address
+        to: esult[0].email, // list of receivers
+        subject: 'Bienvenue', // Subject line
+        html: '<p>Bienvenu sur Why not </p>'// plain text body
+      };
+
+      transporter.sendMail(mailOptions, function (err, info) {
+        if(err)
+          console.log(err)
+        else
+          console.log(info);
+     });
 });
 
 router.post('/modify', verifyToken,upload.single('image'), async function (req, res, next) {
