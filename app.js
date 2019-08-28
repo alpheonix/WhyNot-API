@@ -73,9 +73,8 @@ cron.schedule('* * * * *',async () => {
       var result = await col.find().toArray();
 
       result.forEach(async  => {
-        var result2 =  col.aggregate(
-            { $sample: { size: 1 },
-            _id: {$nin: [ObjectId(result[0]._id)]} } )
+        var result2 =  col.findOne(
+            { _id: {$nin: [ObjectId(result[0]._id)]} } )
             console.log(result2[1]);
 
             const mailOptions = {
