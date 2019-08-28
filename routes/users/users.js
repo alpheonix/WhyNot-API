@@ -43,7 +43,7 @@ router.get('/', verifyToken, async (req, res, next) => {
                 _id: {
                     $not: {
                         $elemMatch: {
-                            _id: ObjectId(req.tokzn._id)
+                            _id: ObjectId(req.token._id)
                         }
                     }
                 },

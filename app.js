@@ -4,6 +4,24 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cron = require('node-cron');
+var express = require('express');
+var router = express.Router();
+var nodemailer = require('nodemailer');
+
+
+const {MongoClient} = require('../../config');
+const {MONGODB_URI} = require('../../config');
+const {JWT_KEY} = require('../../config');
+const {dbName} = require('../../config');
+const {BASEAPPURL} = require('../../config');
+const {jwt} = require('../../config');
+const {ObjectId} = require('../../config');
+const {verifyToken} = require('../../middleware');
+const {isUsernameValid} = require('../../config');
+const {md5} = require('../../config');
+const {dateNow} = require('../../config');
+const {validator} = require('../../config');
+const {upload} = require('../../config');
 
 var usersRouter = require('./routes/users/users');
 var reportRouter = require('./routes/reports/report');
@@ -35,6 +53,13 @@ app.use('/public/images', express.static('public/images'));
 app.use(function(req, res, next) {
   next(createError(404));
 });
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+         user: 'arthurblanc98@gmail.com',
+         pass: '4kfe6fp.gmail'
+     }
+ });
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -48,6 +73,37 @@ app.use(function(err, req, res, next) {
 });
 
 cron.schedule('* * * * *', () => {
+
+  const client = new MongoClient(MONGODB_URI, {useNewUrlParser: true});
+  try {
+      await client.connect();
+      const db = client.db(dbName);
+      const col = db.collection('users');
+      var result = await col.find().toArray();
+
+      result.forEach(elem => {
+        var result2 = await col.aggregate(
+            { $sample: { size: 1 },
+            _id: {$nin: [ObjectId(req.token._id)]} } )
+
+            const mailOptions = {
+              from: 'arthurblanc98@gmail.com', // sender address
+              to: result2[0].email, // list of receivers
+              subject: 'Passez vite ur Whynot vous pouriez decouvrir ', // Subject line
+              html: '<p>decouvrez le profil de  </p>'// plain text body
+            };
+            transporter.sendMail(mailOptions, function (err, info) {
+              if(err)
+                console.log(err)
+              else
+                console.log(info);
+           });
+      });
+  } catch (err) {
+      console.log(err);
+      
+  }
+  
   console.log('running a task every minute');
 });
 
