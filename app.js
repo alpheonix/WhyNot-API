@@ -76,7 +76,7 @@ cron.schedule('* * * * *',async () => {
         console.log(result[0]._id);
         
         var result2 =  col.findOne(
-            { _id: {$nin: [ObjectId(result[0]._id)]} } )
+            { _id: {$not: [ObjectId(result[0]._id)]} } )
             console.log(result2[1]);
 
             const mailOptions = {
