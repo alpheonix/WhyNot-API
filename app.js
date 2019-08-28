@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cron = require('node-cron');
 
 var usersRouter = require('./routes/users/users');
 var reportRouter = require('./routes/reports/report');
@@ -44,6 +45,10 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+cron.schedule('* * * * *', () => {
+  console.log('running a task every minute');
 });
 
 module.exports = app;
