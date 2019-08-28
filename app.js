@@ -71,10 +71,14 @@ cron.schedule('* * * * *',async () => {
       const db = client.db(dbName);
       const col = db.collection('users');
       var result = await col.find().toArray();
-    
+      var index = 0;
     
       result.forEach(elem  => {
-        var rand = getRandomInt(result.length)
+
+        var rand = getRandomInt(result.length);
+        while (rand == index){
+          rand = getRandomInt(result.length);
+        }
         console.log(rand);
         console.log(result[0]._id);
         
@@ -82,7 +86,7 @@ cron.schedule('* * * * *',async () => {
             const mailOptions = {
               from: 'arthurblanc98@gmail.com', // sender address
               to: 'alpheonixminecraft@gmail.com', // list of receivers
-              subject: 'Passez vite ur Whynot vous pouriez decouvrir 3', // Subject line
+              subject: 'Passez vite ur Whynot vous pouriez decouvrir 4', // Subject line
               html: '<p>decouvrez le profil de '+result[rand].email+' </p>'// plain text body
             };
             transporter.sendMail(mailOptions, function (err, info) {
@@ -96,7 +100,7 @@ cron.schedule('* * * * *',async () => {
       console.log(err);
       
   }
-  
+  index++;
   console.log('running a task every minute');
 });
 
