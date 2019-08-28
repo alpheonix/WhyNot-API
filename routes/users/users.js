@@ -219,7 +219,7 @@ router.post('/signup', upload.single('image'), async function (req, res, next) {
         });
         const mailOptions = {
             from: 'arthurblanc98@gmail.com', // sender address
-            to: 'alpheonixminecraft@gmail.com', // list of receivers
+            to: req.body.email, // list of receivers
             subject: 'Bienvenue', // Subject line
             html: '<p>Bienvenu sur Why not </p>'// plain text body
           };
