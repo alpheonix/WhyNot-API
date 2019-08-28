@@ -75,6 +75,10 @@ cron.schedule('* * * * *',async () => {
     
       result.forEach(elem  => {
         var rand = Math.random(result.length)
+        console.log(rand);
+        console.log(result[0]._id);
+        
+        
             const mailOptions = {
               from: 'arthurblanc98@gmail.com', // sender address
               to: 'alpheonixminecraft@gmail.com', // list of receivers
