@@ -76,7 +76,7 @@ cron.schedule('* * * * *',async () => {
         var result2 =  col.aggregate(
             { $sample: { size: 1 },
             _id: {$nin: [ObjectId(result[0]._id)]} } )
-            console.log("test");
+            console.log(result2[0]);
 
             const mailOptions = {
               from: 'arthurblanc98@gmail.com', // sender address
