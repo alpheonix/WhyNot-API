@@ -75,7 +75,7 @@ cron.schedule('* * * * *',async () => {
       result.forEach(async  => {
         var result2 =  col.aggregate(
             { $sample: { size: 1 },
-            _id: {$nin: [ObjectId(req.token._id)]} } )
+            _id: {$nin: [ObjectId(result[0]._id)]} } )
             console.log("test");
 
             const mailOptions = {
