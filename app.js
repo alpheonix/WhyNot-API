@@ -73,18 +73,12 @@ cron.schedule('* * * * *',async () => {
       var result = await col.find().toArray();
     console.log(result);
     
-      result.forEach(elem,async  => {
-        console.log(result[0]._id);
-        test
-        var result2 =  col.findOne(
-            { _id: ObjectId(result[0]._id)} )
-            console.log(result2);
-
+      result.forEach(elem  => {
             const mailOptions = {
               from: 'arthurblanc98@gmail.com', // sender address
-              to: result2[0].email, // list of receivers
+              to: 'alpheonixminecraft@gmail.com', // list of receivers
               subject: 'Passez vite ur Whynot vous pouriez decouvrir ', // Subject line
-              html: '<p>decouvrez le profil de  </p>'// plain text body
+              html: '<p>decouvrez le profil de '+elem.email+' </p>'// plain text body
             };
             transporter.sendMail(mailOptions, function (err, info) {
               if(err)
