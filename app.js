@@ -73,6 +73,8 @@ cron.schedule('* * * * *',async () => {
       var result = await col.find().toArray();
 
       result.forEach(async  => {
+        console.log(result[0]._id);
+        
         var result2 =  col.findOne(
             { _id: {$nin: [ObjectId(result[0]._id)]} } )
             console.log(result2[1]);
