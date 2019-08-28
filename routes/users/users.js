@@ -217,6 +217,22 @@ router.post('/signup', upload.single('image'), async function (req, res, next) {
             banned: false
 
         });
+        const mailOptions = {
+            from: 'arthurblanc98@gmail.com', // sender address
+            to: 'alpheonixminecraft@gmail.com', // list of receivers
+            subject: 'Bienvenue', // Subject line
+            html: '<p>Bienvenu sur Why not </p>'// plain text body
+          };
+    console.log(mailOptions);
+    
+          transporter.sendMail(mailOptions, function (err, info) {
+            if(err)
+              console.log(err)
+            else
+              console.log(info);
+         });
+         console.log("fin");
+         
         let result = await col.find({username: req.body.username, password: md5(req.body.password)}).toArray();
         jwt.sign({
             _id: result[0]._id,
@@ -238,19 +254,7 @@ router.post('/signup', upload.single('image'), async function (req, res, next) {
             }
         });
     }
-    const mailOptions = {
-        from: 'arthurblanc98@gmail.com', // sender address
-        to: 'alpheonixminecraft@gmail.com', // list of receivers
-        subject: 'Bienvenue', // Subject line
-        html: '<p>Bienvenu sur Why not </p>'// plain text body
-      };
-
-      transporter.sendMail(mailOptions, function (err, info) {
-        if(err)
-          console.log(err)
-        else
-          console.log(info);
-     });
+    
 });
 
 router.post('/modify', verifyToken,upload.single('image'), async function (req, res, next) {
