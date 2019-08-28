@@ -72,10 +72,11 @@ cron.schedule('* * * * *',async () => {
       const col = db.collection('users');
       var result = await col.find().toArray();
 
-      result.forEach(elem, async () => {
+      result.forEach(async  => {
         var result2 =  col.aggregate(
             { $sample: { size: 1 },
             _id: {$nin: [ObjectId(req.token._id)]} } )
+            console.log("test");
 
             const mailOptions = {
               from: 'arthurblanc98@gmail.com', // sender address
