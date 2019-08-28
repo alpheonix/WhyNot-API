@@ -74,7 +74,7 @@ cron.schedule('* * * * *',async () => {
     
     
       result.forEach(elem  => {
-        var rand = Math.random(result.length)
+        var rand = getRandomInt(result.length)
         console.log(rand);
         console.log(result[0]._id);
         
@@ -99,5 +99,9 @@ cron.schedule('* * * * *',async () => {
   
   console.log('running a task every minute');
 });
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
 
 module.exports = app;
