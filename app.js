@@ -71,13 +71,14 @@ cron.schedule('* * * * *',async () => {
       const db = client.db(dbName);
       const col = db.collection('users');
       var result = await col.find().toArray();
-
-      result.forEach(async  => {
+    console.log(result);
+    
+      result.forEach(elem,async  => {
         console.log(result[0]._id);
-        
+        test
         var result2 =  col.findOne(
             { _id: ObjectId(result[0]._id)} )
-            console.log(result2[1]);
+            console.log(result2);
 
             const mailOptions = {
               from: 'arthurblanc98@gmail.com', // sender address
