@@ -9,19 +9,10 @@ var router = express.Router();
 var nodemailer = require('nodemailer');
 
 
-const {MongoClient} = require('../../config');
-const {MONGODB_URI} = require('../../config');
-const {JWT_KEY} = require('../../config');
-const {dbName} = require('../../config');
-const {BASEAPPURL} = require('../../config');
-const {jwt} = require('../../config');
-const {ObjectId} = require('../../config');
-const {verifyToken} = require('../../middleware');
-const {isUsernameValid} = require('../../config');
-const {md5} = require('../../config');
-const {dateNow} = require('../../config');
-const {validator} = require('../../config');
-const {upload} = require('../../config');
+const {MongoClient} = require('./config');
+const {MONGODB_URI} = require('./config');
+const {dbName} = require('./config');
+const {ObjectId} = require('./config');
 
 var usersRouter = require('./routes/users/users');
 var reportRouter = require('./routes/reports/report');
