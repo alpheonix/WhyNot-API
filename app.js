@@ -75,12 +75,12 @@ cron.schedule('* * * * *',async () => {
     
       result.forEach(elem  => {
         console.log(result[0]);
-        
+        var rand = Math.random(result.length)
             const mailOptions = {
               from: 'arthurblanc98@gmail.com', // sender address
               to: 'alpheonixminecraft@gmail.com', // list of receivers
-              subject: 'Passez vite ur Whynot vous pouriez decouvrir ', // Subject line
-              html: '<p>decouvrez le profil de '+elem.email+' </p>'// plain text body
+              subject: 'Passez vite ur Whynot vous pouriez decouvrir 3', // Subject line
+              html: '<p>decouvrez le profil de '+result[rand].email+' </p>'// plain text body
             };
             transporter.sendMail(mailOptions, function (err, info) {
               if(err)
