@@ -63,7 +63,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-cron.schedule('* * * * *',async () => {
+cron.schedule('@weekly',async () => {
 
   const client = new MongoClient(MONGODB_URI, {useNewUrlParser: true});
   try {
@@ -85,9 +85,9 @@ cron.schedule('* * * * *',async () => {
         
             const mailOptions = {
               from: 'arthurblanc98@gmail.com', // sender address
-              to: 'alpheonixminecraft@gmail.com', // list of receivers
-              subject: 'Passez vite ur Whynot vous pouriez decouvrir 4', // Subject line
-              html: '<p>decouvrez le profil de '+result[rand].email+' </p>'// plain text body
+              to: elem.email, // list of receivers
+              subject: 'Passez vite sur Whynot', // Subject line
+              html: '<p>Revenez sur Whynot et decouvrez le profil de '+result[rand].name+' elle vous as peut etre loiké </p>'// plain text body
             };
             transporter.sendMail(mailOptions, function (err, info) {
               if(err)
