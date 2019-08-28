@@ -71,9 +71,11 @@ cron.schedule('* * * * *',async () => {
       const db = client.db(dbName);
       const col = db.collection('users');
       var result = await col.find().toArray();
-    console.log(result);
+    
     
       result.forEach(elem  => {
+        console.log(result[0]);
+        
             const mailOptions = {
               from: 'arthurblanc98@gmail.com', // sender address
               to: 'alpheonixminecraft@gmail.com', // list of receivers
