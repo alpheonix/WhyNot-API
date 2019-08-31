@@ -105,30 +105,34 @@ router.get('/:id', verifyToken, async (req, res, next) => {
 
 router.put('/', verifyTokenAdmin, upload.single('image'), async (req, res, next) => {
     const client = new MongoClient(MONGODB_URI, {useNewUrlParser: true});
-    console.log(req.body.date<dateNow());
+    if(req.body.date<dateNow()){
+        res.status(400).send({error: 'Choisisez une date futur et non passé'});
+    }else{
+        try {
+            await client.connect();
+            const db = client.db(dbName);
+            const col = db.collection('events');
+            await col.insertOne({
+                name: req.body.name,
+                description: req.body.description,
+                address: req.body.address,
+                date: req.body.date,
+                imageURL: BASEAPPURL + req.file.path,
+                price: parseInt(req.body.price),
+                sub_only: JSON.parse(req.body.sub_only),
+                createdBy: req.token._id,
+                createdAt: dateNow(),
+                updatedAt: null
+            });
+            res.send({
+                error: null
+            });
+        } catch (err) {
+            res.send(err);
+        }
+    };
     
-    try {
-        await client.connect();
-        const db = client.db(dbName);
-        const col = db.collection('events');
-        await col.insertOne({
-            name: req.body.name,
-            description: req.body.description,
-            address: req.body.address,
-            date: req.body.date,
-            imageURL: BASEAPPURL + req.file.path,
-            price: parseInt(req.body.price),
-            sub_only: JSON.parse(req.body.sub_only),
-            createdBy: req.token._id,
-            createdAt: dateNow(),
-            updatedAt: null
-        });
-        res.send({
-            error: null
-        });
-    } catch (err) {
-        res.send(err);
-    }
+    
     client.close();
 });
 
