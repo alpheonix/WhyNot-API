@@ -105,9 +105,7 @@ router.get('/:id', verifyToken, async (req, res, next) => {
 
 router.put('/', verifyTokenAdmin, upload.single('image'), async (req, res, next) => {
     const client = new MongoClient(MONGODB_URI, {useNewUrlParser: true});
-    if(req.body.date<dateNow()){
-        res.status(400).send({error: 'Choisisez une date futur et non passé'});
-    }else{
+    
         try {
             await client.connect();
             const db = client.db(dbName);
