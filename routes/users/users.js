@@ -192,7 +192,7 @@ router.post('/signup', upload.single('image'), async function (req, res, next) {
         res.status(400).send({error: 'Le mot de passe doit contenir au moins 5 caractères'});
     } else if (data.some(data => data.email === req.body.email)) {
         res.status(400).send({error: 'Cet email est déjà associé à un compte'});
-    } else {
+    } else{
         //INSERT ONE DOCUMENT
         await col.insertOne({
             email: req.body.email,
@@ -218,10 +218,10 @@ router.post('/signup', upload.single('image'), async function (req, res, next) {
 
         });
         const mailOptions = {
-            from: 'arthurblanc98@gmail.com', // sender address
-            to: req.body.email, // list of receivers
-            subject: 'Bienvenue', // Subject line
-            html: '<p>Bienvenu sur Why not </p>'// plain text body
+            from: 'arthurblanc98@gmail.com', 
+            to: req.body.email, 
+            subject: 'Bienvenue', 
+            html: '<p>Bienvenu sur Why not </p>'
           };
     console.log(mailOptions);
     

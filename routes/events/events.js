@@ -105,6 +105,8 @@ router.get('/:id', verifyToken, async (req, res, next) => {
 
 router.put('/', verifyTokenAdmin, upload.single('image'), async (req, res, next) => {
     const client = new MongoClient(MONGODB_URI, {useNewUrlParser: true});
+    console.log(req.body.date<dateNow());
+    
     try {
         await client.connect();
         const db = client.db(dbName);
