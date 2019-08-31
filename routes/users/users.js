@@ -68,6 +68,7 @@ router.get('/', verifyToken, async (req, res, next) => {
                 film: req.token.film,
                 activite: req.token.activite,
                 musique: req.token.musique,
+                banned:false,
                 viewers: {
                     $not: {
                         $elemMatch: {
