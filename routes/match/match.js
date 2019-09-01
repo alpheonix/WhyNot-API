@@ -35,7 +35,7 @@ router.get('/', verifyToken, async (req, res, next) => {
         
         if (result1 !== 0) {
             for (let x = 0; x < result1.length; x++) {
-                let finalUsersTab = await userCol.find({_id: ObjectId(result1[x].user1)}).toArray();
+                let finalUsersTab = await userCol.find({_id: ObjectId(result1[x].user2)}).toArray();
                 if (finalUsersTab.length !== 0) {
                     result.push(finalUsersTab[0]);
                 }
@@ -44,7 +44,7 @@ router.get('/', verifyToken, async (req, res, next) => {
         
         if (result2 !== 0) {
             for (let x = 0; x < result2.length; x++) {
-                let finalUsersTab = await userCol.find({_id: ObjectId(result2[x].user2)}).toArray();
+                let finalUsersTab = await userCol.find({_id: ObjectId(result2[x].user1)}).toArray();
                 if (finalUsersTab.length !== 0) {
                     result.push(finalUsersTab[0]);
                 }
