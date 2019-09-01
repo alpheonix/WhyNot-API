@@ -37,9 +37,9 @@ router.get('/', verifyToken, async (req, res, next) => {
         await client.connect();
         const db = client.db(dbName);
         const col = db.collection('users');
-        let result;
+        let result1;
         if (req.token.preference === 2) {
-            result = await col.find({
+            result1 = await col.find({
                 _id: {
                     $not: {
                         $elemMatch: {
@@ -61,7 +61,7 @@ router.get('/', verifyToken, async (req, res, next) => {
                 banned:false
             }).toArray();
         } else {
-            result = await col.find({
+            result1 = await col.find({
                 _id: {$nin: [ObjectId(req.token._id)]},
                 gender: req.token.preference,
                 preference: req.token.gender,
@@ -80,7 +80,7 @@ router.get('/', verifyToken, async (req, res, next) => {
         }
         console.log();
         
-        res.send(result);
+        res.send(result1);
     } catch (err) {
         res.send({
             error: err
