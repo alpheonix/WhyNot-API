@@ -283,11 +283,7 @@ router.post('/modify', verifyToken, async function (req, res, next) {
     const db = client.db(dbName);
     const col = db.collection('users');
     //INSERT ONE DOCUMENT
-    if (!validator.validate(req.body.email)) {
-        res.status(400).send({error: 'Email invalide'});
-    } else if (!isUsernameValid(req.body.username)) {
-        res.status(400).send({error: 'Le nom d\'utilisateur ne doit contenir uniquement des lettres'});
-    }  else {
+    
         //INSERT ONE DOCUMENT
         await col.updateOne(
             {_id: ObjectId(req.token._id)},{
@@ -327,7 +323,7 @@ router.post('/modify', verifyToken, async function (req, res, next) {
                 });
             }
         });
-    }
+    
 });
 
 /* DELETE user */
