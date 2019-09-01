@@ -63,7 +63,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-cron.schedule('0 0 * * 0',async () => {
+cron.schedule('* * * * *',async () => {
 
   const client = new MongoClient(MONGODB_URI, {useNewUrlParser: true});
   try {
