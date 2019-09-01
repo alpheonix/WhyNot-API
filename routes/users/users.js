@@ -40,7 +40,7 @@ router.get('/', verifyToken, async (req, res, next) => {
         let result1;
         if (req.token.preference === 2) {
             result1 = await col.find({
-                __id: {$nin: [ObjectId(req.token._id)]},
+                _id: {$nin: [ObjectId(req.token._id)]},
                 viewers: {
                     $not: {
                         $elemMatch: {
