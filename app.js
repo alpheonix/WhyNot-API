@@ -87,7 +87,7 @@ cron.schedule('0 14 * * 0',async () => {
               from: 'arthurblanc98@gmail.com', // sender address
               to: elem.email, // list of receivers
               subject: 'Passez vite sur Whynot', // Subject line
-              html: '<p>Revenez sur Whynot et decouvrez le profil de '+result[rand].username+' elle vous as peut etre loiké </p>'// plain text body
+              html: '<p>Revenez sur Whynot et decouvrez le profil de '+result[rand].username+' il/elle vous a peut etre liké </p>'// plain text body
             };
             transporter.sendMail(mailOptions, function (err, info) {
               if(err)

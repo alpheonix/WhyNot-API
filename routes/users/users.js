@@ -265,7 +265,19 @@ router.get('/modify', verifyToken,upload.single('image'), async function (req, r
     
 });
 
-router.post('/modify', verifyToken,upload.single('image'), async function (req, res, next) {
+router.post('/modifyPhoto', verifyToken,upload.single('image'), async function (req, res, next) {
+    const client = new MongoClient(MONGODB_URI, {useNewUrlParser: true});
+    await client.connect();
+    const db = client.db(dbName);
+    const col = db.collection('users');
+    await col.updateOne(
+        {_id: ObjectId(req.token._id)},{
+            $set: {
+                photo: BASEAPPURL + req.file.path,
+            }})
+});
+
+router.post('/modify', verifyToken, async function (req, res, next) {
     const client = new MongoClient(MONGODB_URI, {useNewUrlParser: true});
     await client.connect();
     const db = client.db(dbName);
@@ -282,7 +294,6 @@ router.post('/modify', verifyToken,upload.single('image'), async function (req, 
                 $set: {
                     email: req.body.email,
                     username: req.body.username,
-                    photo: BASEAPPURL + req.file.path,
                     preference: parseInt(req.body.preference),
                     film: parseInt(req.body.film),
                     musique: parseInt(req.body.musique),
