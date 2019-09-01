@@ -26,14 +26,13 @@ router.get('/', verifyToken, async (req, res, next) => {
         const userCol = db.collection('users');
         let result = [];
         console.log(req.token._id);
-        
         let result1 = await col.find({
-            user1: {$nin: [req.token._id]}
+            user1: req.token._id
         }).toArray();
         let result2 = await col.find({
-            user2: {$nin: [req.token._id]}
+            user2: req.token._id
         }).toArray();
-
+        
         if (result1 !== 0) {
             for (let x = 0; x < result1.length; x++) {
                 let finalUsersTab = await userCol.find({_id: ObjectId(result1[x].user1)}).toArray();
