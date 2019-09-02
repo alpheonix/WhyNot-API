@@ -63,7 +63,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-cron.schedule('0 14 * * 0',async () => {
+/*cron.schedule('0 14 * * 0',async () => {
 
   const client = new MongoClient(MONGODB_URI, {useNewUrlParser: true});
   try {
@@ -106,6 +106,6 @@ cron.schedule('0 14 * * 0',async () => {
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
-}
+}*/
 
 module.exports = app;

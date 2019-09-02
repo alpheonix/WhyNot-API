@@ -271,6 +271,11 @@ router.post('/modify', verifyToken,upload.single('image'), async function (req, 
     const db = client.db(dbName);
     const col = db.collection('users');
     //INSERT ONE DOCUMENT
+    console.log(req.body.email);
+    console.log(req.token._id);
+    console.log(req.body.email);
+    console.log(req.body.email);
+    
     if (!validator.validate(req.body.email)) {
         res.status(400).send({error: 'Email invalide'});
     } else if (!isUsernameValid(req.body.username)) {
